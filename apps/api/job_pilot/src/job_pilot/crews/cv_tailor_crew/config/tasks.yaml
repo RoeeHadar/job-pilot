@@ -1,0 +1,30 @@
+tailor_task:
+  description: >
+    Create a tailored CV for this role using only facts from the resume/profile.
+
+    Job title: {job_title}
+    Company: {company}
+
+    Job description:
+    {job_description}
+
+    Baseline resume:
+    {resume_text}
+
+    Seeker profile:
+    {seeker_profile}
+
+    Output structured markdown suitable for later DOCX export.
+    Emphasize matching skills; do not invent employers or dates.
+  expected_output: >
+    Tailored CV in markdown (summary, skills, experience, education)
+  agent: tailor
+
+edit_task:
+  description: >
+    Edit the tailored CV for clarity and honesty. Keep markdown structure.
+  expected_output: >
+    Final tailored CV markdown ready for in-app edit and DOCX export
+  agent: editor
+  context:
+    - tailor_task

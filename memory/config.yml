@@ -1,0 +1,13 @@
+recency_decay_days: 45
+min_confidence_to_persist: 0.55
+recall_top_k: 12
+embed:
+  provider: user-configured
+  model: null
+llm:
+  provider: user-configured
+  model: null
+market_scope: israel
+languages:
+  - he
+  - en

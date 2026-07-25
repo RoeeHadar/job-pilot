@@ -1,0 +1,29 @@
+match_task:
+  description: >
+    Given the seeker resume, profile, and jobs JSON, produce a ranked shortlist.
+    Resume:
+    {resume_text}
+
+    Profile:
+    {seeker_profile}
+
+    Jobs JSON:
+    {jobs_json}
+
+    Rules:
+    - Only Israel locations or remote roles open to Israeli developers
+    - Score 0-100 with a one-sentence rationale each
+    - Return markdown table: rank, title, company, score, rationale
+  expected_output: >
+    A markdown ranked shortlist table with scores and rationales
+  agent: matcher
+
+critique_task:
+  description: >
+    Review the matcher shortlist. Remove out-of-scope or weak fits.
+    Return the final shortlist only.
+  expected_output: >
+    Final markdown shortlist after critique
+  agent: critic
+  context:
+    - match_task

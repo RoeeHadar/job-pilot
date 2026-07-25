@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "apify-jobs": {
+      "url": "https://mcp.apify.com/?tools=actors,docs,amrameng/israeli-job-boards-scraper,johnvc/Google-Jobs-Scraper,shahidirfan/linkedin-jobs-mcp-server"
+    }
+  }
+}
