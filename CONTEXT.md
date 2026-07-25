@@ -82,3 +82,31 @@ Monorepo: `apps/web` (Vite + React), `apps/api` (FastAPI + CrewAI flows/crews), 
 First-run is a **local profile wizard** (not cloud auth): name, current title, baseline resume upload, Memory preparation. Until `onboarding_complete`, Jobs / Tailor CV / Alerts are blocked. No password in MVP.
 
 Resume upload shows a **success confirmation**, not a raw text dump. A **review step** (edit name/title/skills) appears only when extraction quality is low; high-quality parse skips review and offers Continue.
+
+## Local Score
+
+A non-LLM fit signal (e.g. embeddings / lexical overlap) available even without a BYO AI key. Always shown when ranking is possible; does not replace the Fit Rubric when an LLM is configured.
+
+## Fit Rubric
+
+LLM-judged multi-dimension fit (hard requirements, skills/experience evidence, role alignment, Israel/location eligibility, risks/gaps) with citations into the JD and baseline resume/Memory. Compensation and culture are advisory, not scored dimensions. Requires a BYO AI key.
+
+## Keyword gaps
+
+Requirements or terms prominent in the JD that are weak or missing in the baseline resume/Memory. Shown beside fit signals to guide Tailor and Seeker judgment — not an invitation to invent experience.
+
+## Application Pack
+
+Optional post-Tailor bundle: cover letter draft, interview prep, and ATS form answer drafts. Explicit Seeker action; not part of every Tailor run.
+
+## Outreach Pack
+
+Three draft formats for a role: short pitch, LinkedIn note, cold email — grounded in Memory and the JD. Available from Jobs; Dreaming may propose timing. Never auto-sent.
+
+## Job status
+
+Minimal apply progress on a job record: saved → tailored → ready. Not a Kanban CRM; full application tracker is out of MVP scope.
+
+## Qualified Application
+
+A tailored CV the Seeker has reviewed and marked ready to apply. Primary v1 success signal is time from onboarding complete to first Qualified Application.

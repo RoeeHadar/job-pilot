@@ -5,6 +5,8 @@ type TailorResult = {
   id: number
   content_md: string
   mode: string
+  review_ok?: boolean
+  review_issues?: string[]
 }
 
 type Job = {
@@ -93,6 +95,16 @@ export function TailorPage() {
       {result && (
         <div className="stack">
           <p className="muted">Variant #{result.id} · grounded in your baseline CV</p>
+          {result.review_issues && result.review_issues.length > 0 && (
+            <div className={`status ${result.review_ok ? '' : 'warn'}`}>
+              <strong>{result.review_ok ? 'Review notes' : 'Reviewer blocked invented content'}</strong>
+              <ul>
+                {result.review_issues.map((issue) => (
+                  <li key={issue}>{issue}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="field">
             <label htmlFor="cv">Editable CV</label>
             <textarea
@@ -105,6 +117,21 @@ export function TailorPage() {
           <a className="button" href={`/api/tailor/${result.id}/docx`}>
             Download DOCX
           </a>
+          {jobId && (
+            <button
+              type="button"
+              className="secondary"
+              onClick={async () => {
+                try {
+                  await apiPostJson(`/api/jobs/${jobId}/status`, { status: 'ready' })
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : String(err))
+                }
+              }}
+            >
+              Mark ready to apply
+            </button>
+          )}
         </div>
       )}
     </div>

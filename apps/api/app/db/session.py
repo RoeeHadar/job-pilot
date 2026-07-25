@@ -40,6 +40,11 @@ class Job(Base):
     match_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     posted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    # Seeker feedback (P0.3)
+    feedback: Mapped[str | None] = mapped_column(String(32), nullable=True)  # like|dislike|dismiss
+    snoozed_until: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    # Minimal apply progress (P0.4): saved|tailored|ready
+    status: Mapped[str] = mapped_column(String(32), default="saved")
 
 
 class Alert(Base):
@@ -127,6 +132,14 @@ def init_db() -> None:
         cols = {row[1] for row in conn.exec_driver_sql("PRAGMA table_info(jobs)").fetchall()}
         if "posted_at" not in cols:
             conn.exec_driver_sql("ALTER TABLE jobs ADD COLUMN posted_at DATETIME")
+        if "feedback" not in cols:
+            conn.exec_driver_sql("ALTER TABLE jobs ADD COLUMN feedback VARCHAR(32)")
+        if "snoozed_until" not in cols:
+            conn.exec_driver_sql("ALTER TABLE jobs ADD COLUMN snoozed_until DATETIME")
+        if "status" not in cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE jobs ADD COLUMN status VARCHAR(32) DEFAULT 'saved'"
+            )
         tables = {
             row[0]
             for row in conn.exec_driver_sql(

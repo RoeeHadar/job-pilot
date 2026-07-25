@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.db.session import CvVariant, Job, SeekerProfile, get_db
+from app.services.cv_reviewer import review_cv
 from app.services.docx_export import markdown_to_docx_bytes
 from app.services.gate import require_onboarding
 from app.settings import get_settings
@@ -28,6 +29,8 @@ class TailorResult(BaseModel):
     id: int
     content_md: str
     mode: str
+    review_ok: bool = True
+    review_issues: list[str] = Field(default_factory=list)
 
 
 @router.post("/tailor", response_model=TailorResult)
@@ -90,6 +93,12 @@ def tailor_cv(
         )
         mode = "stub"
 
+    review = review_cv(resume, content, description)
+    content = review.content_md
+
+    if job is not None:
+        job.status = "tailored"
+
     variant = CvVariant(
         job_id=job.id if job else None,
         title=f"{title} — tailored",
@@ -98,7 +107,13 @@ def tailor_cv(
     db.add(variant)
     db.commit()
     db.refresh(variant)
-    return TailorResult(id=variant.id, content_md=variant.content_md, mode=mode)
+    return TailorResult(
+        id=variant.id,
+        content_md=variant.content_md,
+        mode=mode,
+        review_ok=review.ok,
+        review_issues=review.issues,
+    )
 
 
 @router.get("/tailor/{variant_id}/docx")

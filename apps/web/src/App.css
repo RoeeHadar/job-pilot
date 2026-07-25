@@ -206,6 +206,11 @@ button:disabled {
   border-color: rgba(31, 111, 99, 0.35);
 }
 
+.status.warn {
+  background: rgba(196, 92, 38, 0.1);
+  border-color: rgba(196, 92, 38, 0.35);
+}
+
 a.button {
   display: inline-flex;
   align-items: center;
@@ -229,6 +234,33 @@ a.button {
 
 .list strong {
   font-family: Georgia, serif;
+}
+
+.fit-panel {
+  margin-top: 0.55rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.gaps-label {
+  color: var(--ink);
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.rubric {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.rubric li {
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.55rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 252, 245, 0.7);
 }
 
 @media (max-width: 720px) {

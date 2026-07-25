@@ -42,20 +42,34 @@ test('complete local-first seeker flow', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'Suggested jobs' })).toBeVisible()
   await expect(page.getByText('Ranked for you from your resume and Memory.')).toBeVisible()
-  await expect(page.locator('.list li')).toHaveCount(3)
+  await expect(page.locator('.list > li')).toHaveCount(3)
+  await expect(page.getByRole('button', { name: 'Fit rubric' }).first()).toBeVisible()
+  await page.getByRole('button', { name: 'Fit rubric' }).first().click()
+  await expect(page.getByText(/Hard requirements:/)).toBeVisible()
+
+  await page.getByRole('button', { name: 'Outreach pack' }).first().click()
+  await expect(page.getByRole('heading', { name: 'Outreach pack' })).toBeVisible()
+  await expect(page.getByText(/never auto-sends/i)).toBeVisible()
+  await page.getByRole('button', { name: 'Close pack' }).click()
+
+  const beforeCount = await page.locator('.list > li').count()
+  await page.getByRole('button', { name: 'Dismiss' }).first().click()
+  await expect(page.locator('.list > li')).toHaveCount(beforeCount - 1)
 
   await page.getByRole('button', { name: 'Paste a job you found' }).click()
   const manualJd =
     'Platform engineer for Python FastAPI and SQL services in Tel Aviv. Build reliable APIs and automated tests.'
   await page.getByLabel('Job description').fill(manualJd)
   await page.getByRole('button', { name: 'Add to list' }).click()
-  await expect(page.locator('.list li')).toHaveCount(4)
+  await expect(page.locator('.list > li')).toHaveCount(3)
 
-  await page.locator('.list li').first().getByRole('link', { name: 'Tailor CV' }).click()
+  await page.locator('.list > li').first().getByRole('link', { name: 'Tailor CV' }).click()
   await expect(page).toHaveURL(/\/tailor\?jobId=\d+$/)
   await expect(page.getByLabel('Job description (required)')).not.toHaveValue('')
   await page.getByRole('button', { name: 'Generate' }).click()
   await expect(page.getByLabel('Editable CV')).toContainText('E2E Developer')
+  await expect(page.getByRole('button', { name: 'Mark ready to apply' })).toBeVisible()
+  await page.getByRole('button', { name: 'Mark ready to apply' }).click()
 
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('link', { name: 'Download DOCX' }).click()

@@ -8,15 +8,22 @@ Israel, including remote roles open to Israeli candidates.
 - Local onboarding: name, current title, and baseline resume
 - PDF-first resume extraction with DOCX/text fallback
 - Resume-backed Memory stored on the user's machine
-- Suggested jobs ranked against the baseline resume
+- Suggested jobs ranked against the baseline resume (Local Score)
+- Fit Rubric (five dimensions + citations) and keyword gaps on Jobs
+- Like / dislike / snooze / dismiss feedback written into Memory
 - Newest-first fallback when personalization is unavailable
-- JD-only CV tailoring; title and company are optional
+- JD-only CV tailoring with a reviewer gate against invented experience
 - Editable tailored CV with DOCX export
+- Minimal job status: saved → tailored → ready
+- Outreach Pack drafts (pitch / LinkedIn note / email) — never auto-sent
 - In-app alerts
 - English/Hebrew-ready product structure
 
 The app never auto-sends outreach. AI and job-data providers use keys supplied
 by the user.
+
+Full project narrative: [`docs/PROJECT.md`](docs/PROJECT.md).
+Competitive research and P0 decisions: [`docs/research/competitive-landscape-enhancements.md`](docs/research/competitive-landscape-enhancements.md), ADR [`0020`](docs/adr/0020-post-research-enhancement-scope.md).
 
 ## Repository
 
@@ -94,9 +101,10 @@ npm run test:e2e
 ```
 
 The E2E test covers onboarding, route gating, synthetic resume upload, suggested
-jobs, manual JD import, Tailor prefill/generation, DOCX download, alerts, console
-errors, API errors, and a mobile viewport. It uses temporary data and does not
-touch the user's local resume or profile.
+jobs, fit rubric, outreach pack, dismiss feedback, manual JD import, Tailor
+prefill/generation, mark ready, DOCX download, alerts, console errors, API
+errors, and a mobile viewport. It uses temporary data and does not touch the
+user's local resume or profile.
 
 ## Provider configuration
 

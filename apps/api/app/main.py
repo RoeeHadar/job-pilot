@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.session import init_db
-from app.routers import alerts, health, jobs, onboarding, tailor
+from app.routers import alerts, health, jobs, onboarding, outreach, tailor
 from app.settings import get_settings
 
 
@@ -33,6 +33,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5190",
         "http://127.0.0.1:5190",
+        "http://localhost:5191",
+        "http://127.0.0.1:5191",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -42,5 +44,6 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(onboarding.router, prefix="/api")
 app.include_router(jobs.router, prefix="/api")
+app.include_router(outreach.router, prefix="/api")
 app.include_router(tailor.router, prefix="/api")
 app.include_router(alerts.router, prefix="/api")
